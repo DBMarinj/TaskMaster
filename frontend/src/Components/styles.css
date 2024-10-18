@@ -1,0 +1,29 @@
+/* Estilo para el título general sin sombra */
+.dashboard-title {
+    font-size: 2.5rem; /* Ajusta el tamaño de letra para el título */
+    color: #00e0ff; /* Mismo color que user-name */
+}
+
+/* Estilo para el nombre del usuario */
+.user-name {
+    font-size: 2.5rem; /* Mismo tamaño de letra que el título */
+    color: #00e0ff;
+    text-shadow: 0 0 8px #00e0ff, 0 0 16px #00e0ff; /* Sombra constante */
+}
+
+/* Estilo para los títulos de las cards sin sombra */
+.card-title {
+    font-size: 2rem; /* Tamaño de letra grande */
+    color: #00e0ff; /* Mismo color que user-name */
+}
+
+/* Estilo para los enlaces dentro de las cards */
+.custom-link {
+    font-size: 1.2rem; /* Tamaño de letra más pequeño para los enlaces */
+    color: #ffffff; /* Color blanco para los enlaces */
+    text-decoration: none;
+}
+
+.custom-link:hover {
+    text-decoration: underline;
+}
