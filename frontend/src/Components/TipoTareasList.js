@@ -1,90 +1,87 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function TipoTareasList({ onEdit, onDelete, tareas }) {
-  const [tiposTareas, setTiposTareas] = useState([]); // Estado para todas las tareas
+// Componente de lista de tareas que recibe tareas, funciones de edición y eliminación como props
+function TipoTareasList({ tareas, onEdit, onDelete }) {
+  // Estados locales para almacenar los datos de estados y prioridades obtenidos del backend
+  const [estados, setEstados] = useState([]);
+  const [prioridades, setPrioridades] = useState([]);
 
-  // Efecto para obtener la lista de tareas cuando el componente se monta
+  // useEffect para realizar la solicitud al backend una vez que el componente se monta
   useEffect(() => {
-    const fetchTiposTareas = async () => {
+    const fetchData = async () => {
       try {
-        const token = localStorage.getItem('access_token'); // Obtener el token de localStorage
-        const config = {
-          headers: { Authorization: `Bearer ${token}` }
-        };
+        // Obtener el token de autenticación desde localStorage
+        const token = localStorage.getItem('access_token');
+        const config = { headers: { Authorization: `Bearer ${token}` } };
 
-        const response = await axios.get('http://127.0.0.1:8000/tareas/tareas/', config);
+        // Realizar las solicitudes a las API para obtener estados y prioridades en paralelo
+        const [estadosResponse, prioridadesResponse] = await Promise.all([
+          axios.get('http://127.0.0.1:8000/tareas/estados/', config),
+          axios.get('http://127.0.0.1:8000/tareas/prioridades/', config),
+        ]);
 
-        if (Array.isArray(response.data)) {
-          setTiposTareas(response.data); // Actualiza el estado con las tareas obtenidas
-          console.log("Tareas obtenidas exitosamente:", response.data); // Mostrar los datos obtenidos en la consola
-        } else {
-          console.error("La respuesta no es un array:", response.data);
-        }
+        // Almacenar las respuestas en los estados locales
+        setEstados(estadosResponse.data);
+        setPrioridades(prioridadesResponse.data);
       } catch (error) {
-        console.error("Error al obtener las tareas:", error);
+        // Manejar cualquier error que ocurra durante la solicitud
+        console.error('Error al obtener estados y prioridades:', error);
       }
     };
 
-    fetchTiposTareas(); // Llama a la función para obtener las tareas
-  }, []); // Se ejecuta una sola vez al montar el componente
+    // Llamar a la función para obtener los datos
+    fetchData();
+  }, []);
 
-  // Renderizado del componente
+  // Función para obtener el nombre del estado a partir de su id
+  const getNombreEstado = (idEstado) => {
+    const estado = estados.find((e) => e.id_estado === idEstado);
+    return estado ? estado.nombre : 'Desconocido'; // Devolver el nombre o 'Desconocido' si no se encuentra
+  };
+
+  // Función para obtener el nombre de la prioridad a partir de su id
+  const getNombrePrioridad = (idPrioridad) => {
+    const prioridad = prioridades.find((p) => p.id_prioridad === idPrioridad);
+    return prioridad ? prioridad.nombre : 'Desconocido'; // Devolver el nombre o 'Desconocido' si no se encuentra
+  };
+
   return (
-    <div className='container'>
-      {/* Sección para tareas con estado 7 (Pendientes) */}
-      <div className="container card mt-4 p-4">
-        <h2 style={{ textAlign: 'center' }}>LISTADO DE TAREAS</h2>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Título</th> {/* Nuevo campo 'Título' agregado */}
-              <th>Descripción</th>
-              <th>Fecha Vencimiento</th>
-              <th>Prioridad</th>
-              <th>Estado</th>
-              <th>Etiquetas</th>
-              <th>Acciones</th>
+    <div className="table-responsive">
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            {/* He eliminado la columna de Usuario */}
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Fecha de Vencimiento</th>
+            <th>Prioridad</th>
+            <th>Estado</th>
+            <th>Etiquetas</th> {/* Nueva columna para las etiquetas */}
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tareas.map((tarea) => (
+            <tr key={tarea.id_tarea}>
+              <td>{tarea.titulo}</td>
+              <td>{tarea.descripcion}</td>
+              <td>{tarea.fecha_vencimiento}</td>
+              {/* He eliminado la celda del Usuario */}
+              <td>{getNombrePrioridad(tarea.prioridad)}</td> {/* Mostrar el nombre de la prioridad */}
+              <td>{getNombreEstado(tarea.estado)}</td> {/* Mostrar el nombre del estado */}
+              <td>
+                {tarea.etiquetas.map((etiqueta) => etiqueta.nombre).join(', ')} {/* Mostrar etiquetas separadas por comas */}
+              </td>
+              <td>
+                {/* Botones de editar y eliminar */}
+                <button className="btn btn-primary mr-2" onClick={() => onEdit(tarea)}>Editar</button>
+                <button className="btn btn-danger" onClick={() => onDelete(tarea.id_tarea)}>Eliminar</button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {/* Verificar si tiposTareas es un array válido antes de hacer el map */}
-            {Array.isArray(tareas) && tareas.length > 0 ? (
-              tareas.map(tipo => (
-                <tr key={tipo.id_tarea}>
-                  <td>{tipo.id_tarea}</td>
-                  <td>{tipo.titulo}</td> {/* Mostrar el nuevo campo 'Título' */}
-                  <td>{tipo.descripcion}</td>
-                  <td>{new Date(tipo.fecha_vencimiento).toLocaleDateString()}</td>
-                  <td>{tipo.prioridad}</td>
-                  <td>{tipo.estado}</td>
-                  <td>
-                    {tipo.etiquetas.length > 0 ? (
-                      tipo.etiquetas.map((etiqueta, index) => (
-                        <span key={etiqueta.id_etiqueta}>
-                          {etiqueta.nombre}
-                          {index < tipo.etiquetas.length - 1 && ', '}
-                        </span>
-                      ))
-                    ) : (
-                      <span>Sin etiquetas</span>
-                    )}
-                  </td>
-                  <td>
-                    <button className="btn btn-warning" onClick={() => onEdit(tipo)}>Editar</button>
-                    <button className="btn btn-danger" onClick={() => onDelete(tipo.id_tarea)}>Eliminar</button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="8">No hay tareas pendientes.</td> {/* Ajustar colSpan a 8 para el nuevo campo */}
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>   
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
