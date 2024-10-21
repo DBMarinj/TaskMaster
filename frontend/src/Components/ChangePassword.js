@@ -9,8 +9,26 @@ const ChangePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);  // Estado para almacenar la información del usuario
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  // Función para obtener la información del usuario desde el backend
+  const fetchUserInfo = async () => {
+    try {
+      const token = localStorage.getItem('access_token');
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get('http://127.0.0.1:8000/current-user/', config); // Ajusta la ruta según la API
+      setUserInfo(response.data); // Actualiza el estado con la información del usuario
+      console.log("User info fetched successfully:", response.data);
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+    }
+  };
 
   useEffect(() => {
     // Obtener datos del usuario logueado
@@ -32,6 +50,7 @@ const ChangePassword = () => {
     };
 
     fetchUserData(); // Llamar a la función para obtener datos del usuario
+    fetchUserInfo();  // Llamar a la función para obtener la información del usuario
   }, []);
 
   // Maneja el envío del formulario
@@ -73,7 +92,7 @@ const ChangePassword = () => {
 
   return (
     <div className="bg-white text-dark min-vh-100">
-      <Menu />
+      <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
       <div className="container">
         <div className="card mt-4 bg-light"> {/* Añadida clase de fondo bg-light para un gris claro */}
           <div className="card-body">

@@ -14,6 +14,20 @@ const getPriorityName = (priority) => {
     }
 };
 
+// Función para mapear los números de estado a sus nombres
+const getStateName = (state) => {
+    switch (state) {
+        case 7:
+            return 'Pendiente';
+        case 8:
+            return 'En Progreso';
+        case 9:
+            return 'Completado';
+        default:
+            return 'Desconocido';
+    }
+};
+
 const TaskCard = ({ task, onMoveForward, onMoveBackward, onShowDetails, index, state }) => {
     console.log("Datos de la tarea:", task); // Verificar los datos de cada tarea
 
@@ -31,6 +45,11 @@ const TaskCard = ({ task, onMoveForward, onMoveBackward, onShowDetails, index, s
                 {/* Mostrar la prioridad de la tarea usando la función para obtener el nombre de prioridad */}
                 <p className="card-text">
                     <small className="text-muted">Prioridad: {getPriorityName(task.prioridad) || 'No asignada'}</small>
+                </p>
+
+                {/* Mostrar el estado de la tarea usando la función para obtener el nombre del estado */}
+                <p className="card-text">
+                    <small className="text-muted">Estado: {getStateName(task.estado) || 'Desconocido'}</small>
                 </p>
 
                 {/* Mostrar la fecha de vencimiento de la tarea */}

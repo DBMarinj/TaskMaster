@@ -3,7 +3,6 @@ import axios from 'axios';
 import Menu from './Menu';  // Importar el componente Menu
 import './styles.css'; // Importa el archivo de estilos
 
-
 const EditProfile = () => {
     const [userData, setUserData] = useState({
         id: '',
@@ -16,6 +15,25 @@ const EditProfile = () => {
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [userInfo, setUserInfo] = useState(null);  // Estado para almacenar la información del usuario
+
+    // Función para obtener la información del usuario desde el backend
+    const fetchUserInfo = async () => {
+        try {
+            const token = localStorage.getItem('access_token');
+            console.log("Token encontrado:", token);  // Verificar el token
+            
+            const response = await axios.get('http://127.0.0.1:8000/current-user/', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+            setUserInfo(response.data);  // Actualiza el estado con la información del usuario
+            console.log("User info fetched successfully:", response.data);
+        } catch (error) {
+            console.error("Error fetching user info:", error);
+        }
+    };
 
     // useEffect para obtener los datos del usuario autenticado desde el backend
     useEffect(() => {
@@ -50,6 +68,7 @@ const EditProfile = () => {
         };
 
         fetchUserData();  // Llamar a la función de obtención de datos
+        fetchUserInfo();  // Llamar a la función para obtener la información del usuario
     }, []);
 
     // Manejo del evento de guardar
@@ -99,7 +118,7 @@ const EditProfile = () => {
 
     return (
         <div className="bg-white text-black min-vh-100">
-            <Menu />  {/* Incluir el componente del menú */}
+            <Menu userInfo={userInfo} />  {/* Pasa la información del usuario al componente Menu */}
             <div className="container mt-5">
                 <div className="card mt-4 bg-light"> {/* Añadida clase de fondo bg-light para un gris claro */}
                     <div className="card-body">

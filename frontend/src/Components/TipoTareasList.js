@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 
 // Componente de lista de tareas que recibe tareas, funciones de edición y eliminación como props
 function TipoTareasList({ tareas, onEdit, onDelete }) {
-  // Estados locales para almacenar los datos de estados y prioridades obtenidos del backend
+  // Estados locales para almacenar los datos de estados, prioridades y etiquetas obtenidos del backend
   const [estados, setEstados] = useState([]);
   const [prioridades, setPrioridades] = useState([]);
+  const [etiquetas, setEtiquetas] = useState([]); // Estado para almacenar etiquetas
 
   // useEffect para realizar la solicitud al backend una vez que el componente se monta
   useEffect(() => {
@@ -15,49 +17,55 @@ function TipoTareasList({ tareas, onEdit, onDelete }) {
         const token = localStorage.getItem('access_token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
 
-        // Realizar las solicitudes a las API para obtener estados y prioridades en paralelo
-        const [estadosResponse, prioridadesResponse] = await Promise.all([
+        // Realizar las solicitudes a las API para obtener estados, prioridades y etiquetas en paralelo
+        const [estadosResponse, prioridadesResponse, etiquetasResponse] = await Promise.all([
           axios.get('http://127.0.0.1:8000/tareas/estados/', config),
           axios.get('http://127.0.0.1:8000/tareas/prioridades/', config),
+          axios.get('http://127.0.0.1:8000/tareas/etiquetas/', config),
         ]);
 
-        // Almacenar las respuestas en los estados locales
+        // Actualizar los estados locales con los datos obtenidos
         setEstados(estadosResponse.data);
         setPrioridades(prioridadesResponse.data);
+        setEtiquetas(etiquetasResponse.data); // Guardar las etiquetas en el estado local
       } catch (error) {
-        // Manejar cualquier error que ocurra durante la solicitud
-        console.error('Error al obtener estados y prioridades:', error);
+        console.error('Error al obtener estados, prioridades o etiquetas:', error);
       }
     };
 
-    // Llamar a la función para obtener los datos
     fetchData();
   }, []);
 
-  // Función para obtener el nombre del estado a partir de su id
-  const getNombreEstado = (idEstado) => {
-    const estado = estados.find((e) => e.id_estado === idEstado);
-    return estado ? estado.nombre : 'Desconocido'; // Devolver el nombre o 'Desconocido' si no se encuentra
+  // Función para obtener el nombre del estado dado su id_estado
+  const obtenerNombreEstado = (id_estado) => {
+    const estado = estados.find((e) => e.id_estado === id_estado);
+    return estado ? estado.nombre : 'Desconocido';
   };
 
-  // Función para obtener el nombre de la prioridad a partir de su id
-  const getNombrePrioridad = (idPrioridad) => {
-    const prioridad = prioridades.find((p) => p.id_prioridad === idPrioridad);
-    return prioridad ? prioridad.nombre : 'Desconocido'; // Devolver el nombre o 'Desconocido' si no se encuentra
+  // Función para obtener el nombre de la prioridad dado su id_prioridad
+  const obtenerNombrePrioridad = (id_prioridad) => {
+    const prioridad = prioridades.find((p) => p.id_prioridad === id_prioridad);
+    return prioridad ? prioridad.nombre : 'Desconocido';
+  };
+
+  // Función para obtener el nombre de la etiqueta dado su id_etiqueta
+  const obtenerNombreEtiqueta = (id_etiqueta) => {
+    const etiqueta = etiquetas.find((e) => e.id_etiqueta === id_etiqueta);
+    return etiqueta ? etiqueta.nombre : 'Sin Etiqueta';
   };
 
   return (
-    <div className="table-responsive">
-      <table className="table table-bordered">
+    <div className="container mt-4">
+      <h2>Lista de Tareas</h2>
+      <table className="table">
         <thead>
           <tr>
-            {/* He eliminado la columna de Usuario */}
             <th>Título</th>
             <th>Descripción</th>
             <th>Fecha de Vencimiento</th>
             <th>Prioridad</th>
             <th>Estado</th>
-            <th>Etiquetas</th> {/* Nueva columna para las etiquetas */}
+            <th>Etiqueta</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -66,15 +74,15 @@ function TipoTareasList({ tareas, onEdit, onDelete }) {
             <tr key={tarea.id_tarea}>
               <td>{tarea.titulo}</td>
               <td>{tarea.descripcion}</td>
-              <td>{tarea.fecha_vencimiento}</td>
-              {/* He eliminado la celda del Usuario */}
-              <td>{getNombrePrioridad(tarea.prioridad)}</td> {/* Mostrar el nombre de la prioridad */}
-              <td>{getNombreEstado(tarea.estado)}</td> {/* Mostrar el nombre del estado */}
+              <td>{moment(tarea.fecha_vencimiento).format('YYYY-MM-DD')}</td> {/* Formatear fecha */}
+              <td>{obtenerNombrePrioridad(tarea.prioridad)}</td>
+              <td>{obtenerNombreEstado(tarea.estado)}</td>
               <td>
-                {tarea.etiquetas.map((etiqueta) => etiqueta.nombre).join(', ')} {/* Mostrar etiquetas separadas por comas */}
+                {tarea.etiquetas && tarea.etiquetas.length > 0
+                  ? obtenerNombreEtiqueta(tarea.etiquetas[0].id_etiqueta)
+                  : 'Sin Etiqueta'}
               </td>
               <td>
-                {/* Botones de editar y eliminar */}
                 <button className="btn btn-primary mr-2" onClick={() => onEdit(tarea)}>Editar</button>
                 <button className="btn btn-danger" onClick={() => onDelete(tarea.id_tarea)}>Eliminar</button>
               </td>

@@ -7,28 +7,42 @@ import Menu from "./Menu"; // Importa el componente Menu
 const PrioridadCRUD = () => {
   const [prioridades, setPrioridades] = useState([]); // Estado para almacenar la lista de prioridades
   const [prioridadEdit, setPrioridadEdit] = useState(null); // Estado para almacenar la prioridad que será editada
+  const [userInfo, setUserInfo] = useState(null); // Estado para la información del usuario
 
-  // Obtiene el token de autenticación del localStorage
-  const token = localStorage.getItem('access_token');
-
-  // Configuración del encabezado de la solicitud con el token de autenticación
+  const token = localStorage.getItem('access_token'); // Obtiene el token del localStorage
   const config = {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${token}` },
   };
 
-  // useEffect para cargar las prioridades cuando se monta el componente
+  // useEffect para cargar prioridades y la información del usuario al montar el componente
   useEffect(() => {
-    fetchPrioridades(); // Llamar a la función para obtener prioridades al cargar el componente
-  }, []);
+    if (token) {
+      fetchPrioridades();
+      fetchUserInfo(); // Obtiene la información del usuario
+    } else {
+      console.error("No token found");
+    }
+  }, [token]);
 
   // Función para obtener todas las prioridades desde el servidor
   const fetchPrioridades = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:8000/tareas/prioridades/', config);
-      setPrioridades(response.data); // Actualiza el estado con las prioridades obtenidas
+      setPrioridades(response.data);
       console.log("Prioridades fetched successfully:", response.data);
     } catch (error) {
       console.error('Error al obtener las prioridades:', error);
+    }
+  };
+
+  // Función para obtener la información del usuario desde el backend
+  const fetchUserInfo = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/current-user/', config); // Ajusta la ruta según la API
+      setUserInfo(response.data);
+      console.log("User info fetched successfully:", response.data);
+    } catch (error) {
+      console.error("Error fetching user info:", error);
     }
   };
 
@@ -36,16 +50,22 @@ const PrioridadCRUD = () => {
   const handleSave = async (prioridadData) => {
     try {
       if (prioridadEdit) {
-        // Si hay una prioridad seleccionada para editar, realizar PUT (actualización)
-        const response = await axios.put(`http://127.0.0.1:8000/tareas/prioridades/${prioridadEdit.id_prioridad}/`, prioridadData, config);
+        const response = await axios.put(
+          `http://127.0.0.1:8000/tareas/prioridades/${prioridadEdit.id_prioridad}/`,
+          prioridadData,
+          config
+        );
         console.log("Prioridad updated successfully:", response.data);
       } else {
-        // Si no hay prioridad seleccionada, realizar POST (crear nueva prioridad)
-        const response = await axios.post('http://127.0.0.1:8000/tareas/prioridades/', prioridadData, config);
+        const response = await axios.post(
+          'http://127.0.0.1:8000/tareas/prioridades/',
+          prioridadData,
+          config
+        );
         console.log("Prioridad created successfully:", response.data);
       }
 
-      fetchPrioridades(); // Recargar la lista de prioridades después de guardar
+      fetchPrioridades(); // Recargar la lista de prioridades
       setPrioridadEdit(null); // Reiniciar el formulario
     } catch (error) {
       console.error('Error al guardar la prioridad:', error);
@@ -56,7 +76,7 @@ const PrioridadCRUD = () => {
   const handleDelete = async (idPrioridad) => {
     try {
       await axios.delete(`http://127.0.0.1:8000/tareas/prioridades/${idPrioridad}/`, config);
-      fetchPrioridades(); // Recargar la lista de prioridades después de eliminar
+      fetchPrioridades(); // Recargar la lista de prioridades
       console.log("Prioridad deleted successfully:", idPrioridad);
     } catch (error) {
       console.error('Error al eliminar la prioridad:', error);
@@ -70,15 +90,12 @@ const PrioridadCRUD = () => {
 
   return (
     <div className="bg-white text-black min-vh-100">
-      <Menu /> {/* Usa el componente Menu */}
+      <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
       <div className="container">
-        <div className="card mt-4 bg-light"> {/* Añadida clase de fondo bg-light para un gris claro */}
+        <div className="card mt-4 bg-light">
           <div className="card-body">
-            <h3 className="card-title my-4 text-center">GESTIÓN PRIORIDADES</h3> {/* Título centrado */}
-            {/* Formulario para agregar o editar prioridades */}
+            <h3 className="card-title my-4 text-center">GESTIÓN PRIORIDADES</h3>
             <PrioridadForm onSave={handleSave} prioridadEdit={prioridadEdit} />
-
-            {/* Lista de prioridades, con funciones para editar o eliminar */}
             <PrioridadList
               prioridades={prioridades}
               onEdit={handleEdit}
