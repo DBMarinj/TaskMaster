@@ -9,12 +9,13 @@ import PasswordResetConfirm from "./Components/PasswordResetConfirm";
 import Registrarse from "./Components/Registrarse";
 import ChangePassword from "./Components/ChangePassword";
 import Usuario from "./Components/Usuario";
+import UserProfile from "./Components/UserProfile"; // Importar el componente de perfil de usuario
 
 // Importamos los componentes actualizados para gestionar las tareas, etiquetas y prioridades
 import TipoTareasCRUD from "./Components/TipoTareasCRUD"; // CRUD de tareas
 import EtiquetaCRUD from "./Components/EtiquetaCRUD"; // CRUD de etiquetas
 import PrioridadCRUD from "./Components/PrioridadCRUD"; // CRUD de prioridades
-import EstadoCRUD from "./Components/EstadoCRUD";// CRUD de estados
+import EstadoCRUD from "./Components/EstadoCRUD"; // CRUD de estados
 import KanbanBoard from "./Components/KanbanBoard";
 
 function App() {
@@ -31,6 +32,9 @@ function App() {
         
         {/* Ruta para editar el perfil del usuario */}
         <Route path="/user-update" element={<EditProfile />} /> 
+        
+        {/* Ruta para el perfil del usuario */}
+        <Route path="/user-profile" element={<UserProfile />} /> {/* Nueva ruta para el perfil del usuario */}
         
         {/* Ruta para la gestión de usuarios */}
         <Route path="/usuario" element={<Usuario />} /> 
@@ -56,13 +60,11 @@ function App() {
         {/* Nueva Ruta para el CRUD de Prioridades */}
         <Route path="/prioridades" element={<PrivateRoute><PrioridadCRUD /></PrivateRoute>} />
 
-        {/* Nueva Ruta para el CRUD de Prioridades */}
+        {/* Nueva Ruta para el CRUD de Estados */}
         <Route path="/estados" element={<PrivateRoute><EstadoCRUD /></PrivateRoute>} />
 
         {/* Nueva Ruta para el tablero Kanban */}
         <Route path="/kanban" element={<KanbanBoard />} />
-
-        
       </Routes>
     </Router>
   );

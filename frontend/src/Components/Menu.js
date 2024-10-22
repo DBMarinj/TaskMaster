@@ -23,21 +23,8 @@ const Menu = ({ userInfo }) => {
             
             {/* Navbar.Collapse para contener los enlaces que se mostrarán en la barra */}
             <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="ml-auto"> {/* ml-auto para alinear los enlaces a la derecha */}
+                <Nav className="ms-auto"> {/* ms-auto para alinear todos los elementos a la derecha */}
                     
-                    {/* Submenú que muestra el nombre del usuario logueado */}
-                    <NavDropdown 
-                        title={<span style={{ color: '#00e0ff' }}>{userInfo ? `${userInfo.nombre} ${userInfo.apellido}` : 'Usuario'}</span>} 
-                        id="usuario-dropdown" 
-                        menuVariant="dark" // Fondo negro para el dropdown
-                    >
-                        {/* Opción para editar el perfil, redirige a /user-update */}
-                        <NavDropdown.Item as={Link} to="/user-update" style={{ color: '#00e0ff' }}>Editar Perfil</NavDropdown.Item>
-                        
-                        {/* Opción para cambiar la contraseña, redirige a /change-password */}
-                        <NavDropdown.Item as={Link} to="/change-password" style={{ color: '#00e0ff' }}>Cambiar Contraseña</NavDropdown.Item>
-                    </NavDropdown>
-
                     {/* Dropdown para las opciones relacionadas con la gestión de tareas */}
                     <NavDropdown 
                         title={<span style={{ color: '#00e0ff' }}>Tareas</span>} 
@@ -60,8 +47,25 @@ const Menu = ({ userInfo }) => {
                         <NavDropdown.Item as={Link} to="/kanban" style={{ color: '#00e0ff' }}>Tablero Kanban</NavDropdown.Item>
                     </NavDropdown>                   
 
-                    {/* Botón para cerrar sesión */}
-                    <Nav.Link onClick={cerrarsesion} style={{ color: '#00e0ff' }}>Cerrar Sesión</Nav.Link>
+                    {/* Submenú que muestra el nombre del usuario logueado, siempre al final */}
+                    <NavDropdown 
+                        title={<span style={{ color: '#00e0ff' }}>{userInfo ? `${userInfo.nombre} ${userInfo.apellido}` : 'Usuario'}</span>} 
+                        id="usuario-dropdown" 
+                        menuVariant="dark" // Fondo negro para el dropdown
+                    >
+                        {/* Opción para editar el perfil, redirige a /user-update */}
+                        <NavDropdown.Item as={Link} to="/user-update" style={{ color: '#00e0ff' }}>Editar Perfil</NavDropdown.Item>
+                        
+                        {/* Opción para cambiar la contraseña, redirige a /change-password */}
+                        <NavDropdown.Item as={Link} to="/change-password" style={{ color: '#00e0ff' }}>Cambiar Contraseña</NavDropdown.Item>
+
+                        {/* Visuaización perfil usuario */}
+                        <NavDropdown.Item as={Link} to="/user-profile" style={{ color: '#00e0ff' }}>Ver Perfil</NavDropdown.Item>
+
+                        {/* Botón para cerrar sesión */}
+                        <NavDropdown.Item onClick={cerrarsesion} style={{ color: '#00e0ff' }}>Cerrar Sesión</NavDropdown.Item>
+                        
+                    </NavDropdown>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

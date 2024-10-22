@@ -11,6 +11,7 @@ const EditProfile = () => {
         apellido: '',  // Inicializado como apellido
         direccion: '',
         celular: '',
+        email: '',  // Inicializado como email
     });
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
@@ -58,6 +59,7 @@ const EditProfile = () => {
                     apellido: response.data.apellido,  // Cambiar de 'last_name' a 'apellido'
                     direccion: response.data.direccion,
                     celular: response.data.celular,
+                    email: response.data.email,  // Agregar el email
                 });
                 setLoading(false);  // Finaliza la carga
             } catch (error) {
@@ -86,6 +88,7 @@ const EditProfile = () => {
             apellido: userData.apellido,  // Cambiar de 'last_name' a 'apellido'
             direccion: userData.direccion,
             celular: userData.celular,
+            email: userData.email,  // Incluir el email en la actualización
         };
 
         try {
@@ -108,6 +111,7 @@ const EditProfile = () => {
                 apellido: response.data.apellido,  // Actualiza correctamente el apellido
                 direccion: response.data.direccion,
                 celular: response.data.celular,
+                email: response.data.email,  // Actualiza correctamente el email
             });
             setMessage('Perfil actualizado correctamente.');  // Mensaje de éxito
         } catch (error) {
@@ -183,6 +187,17 @@ const EditProfile = () => {
                                         className="form-control"
                                         value={userData.celular}
                                         onChange={(e) => setUserData({ ...userData, celular: e.target.value })}
+                                    />
+                                </div>
+
+                                {/* Campo: Email */}
+                                <div className="form-group">
+                                    <label>Email</label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        value={userData.email}  // Campo email
+                                        onChange={(e) => setUserData({ ...userData, email: e.target.value })}
                                     />
                                 </div>
 

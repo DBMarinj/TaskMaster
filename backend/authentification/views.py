@@ -49,7 +49,8 @@ class CurrentUserView(APIView):
             'apellido': user.apellido,
             'direccion': user.direccion,
             'celular': user.celular,
-            'estado': user.estado
+            'estado': user.estado,
+            'email' : user.email
         }
         return Response(user_data)
 
