@@ -14,7 +14,12 @@ const Menu = ({ userInfo }) => {
 
     return (
         // Navbar es el contenedor principal de la barra de navegación
-        <Navbar bg="dark" expand="lg" variant="dark">
+        <Navbar 
+            bg="dark" 
+            expand="lg" 
+            variant="dark" 
+            style={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000 }} // Hace el menú estático
+        >
             {/* Título de la aplicación, que redirige al dashboard */}
             <Navbar.Brand as={Link} to="/dashboard" style={{ color: '#00e0ff' }}>TASK MASTER</Navbar.Brand>
             

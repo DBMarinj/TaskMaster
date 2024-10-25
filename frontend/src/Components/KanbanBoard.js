@@ -138,7 +138,7 @@ const KanbanBoard = () => {
             <div className="sticky-header">
                 <Menu userInfo={userInfo} />
             </div>
-            <div className="container">
+            <div className="container" style={{ marginTop: '80px' }}> {/* Ajuste de margen superior de 50px */}
                 <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}
                     <div className="card-body">
                         <h1 className="card-title my-4 text-center">TABLERO DE TAREAS (KANBAN)</h1>

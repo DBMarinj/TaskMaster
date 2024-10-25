@@ -82,7 +82,7 @@ const TipoTareasCRUD = () => {
   return (
     <div className="bg-white text-black min-vh-100">
       <Menu userInfo={userInfo} /> {/* Usa el componente Menu y pasa userInfo */}
-      <div className="container">
+      <div className="container" style={{ marginTop: '80px' }}> {/* Ajuste de margen superior de 50px */}
         <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}
           <div className="card-body">
             <h3 className="card-title my-4 text-center">GESTIÓN TAREAS</h3>

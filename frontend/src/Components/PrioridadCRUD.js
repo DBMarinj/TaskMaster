@@ -92,7 +92,7 @@ const PrioridadCRUD = () => {
   return (
     <div className="bg-white text-black min-vh-100">
       <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
-      <div className="container">
+      <div className="container" style={{ marginTop: '80px' }}> {/* Aplica margen superior de 50px */}
         <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}
           <div className="card-body">
             <h3 className="card-title my-4 text-center">GESTIÓN PRIORIDADES</h3>

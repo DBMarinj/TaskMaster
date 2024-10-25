@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Importar useNavigate para la redirección
 import Menu from './Menu';  // Importar el componente Menu
+import Footer from './Footer'; // Importar el componente Footer
 import './styles.css'; // Importar el archivo de estilos
 
 const EditProfile = () => {
@@ -131,8 +132,8 @@ const EditProfile = () => {
     return (
         <div className="bg-white text-black min-vh-100">
             <Menu userInfo={userInfo} />  {/* Pasa la información del usuario al componente Menu */}
-            <div className="container mt-5">
-                <div className="card mt-4 bg-light"> {/* Añadida clase de fondo bg-light para un gris claro */}
+            <div className="container" style={{ marginTop: '80px' }}>  {/* Aplica margen superior de 100px */}
+                <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}
                     <div className="card-body">
                         <h2 className="text-center">EDITAR PERFIL</h2>
                         {loading ? (
@@ -227,6 +228,7 @@ const EditProfile = () => {
                     </div>
                 </div>
             </div>
+            <Footer /> {/* Añadido Footer */}
         </div>
     );
 };

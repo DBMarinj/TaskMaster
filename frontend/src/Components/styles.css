@@ -66,22 +66,3 @@
     text-align: center; /* Alineación centrada */
 }
 
-/* Estilo para el contenedor del header */
-.app-header {
-    background-color: #343a40; /* Mismo color que el footer */
-    padding: 20px;
-    text-align: center;
-    color: white;
-    width: 100%;
-    position: relative;
-}
-
-/* Opcional: si el menú tiene enlaces, puedes darle estilo adicional */
-.app-header a {
-    color: white;
-    text-decoration: none;
-}
-
-.app-header a:hover {
-    text-decoration: underline;
-}

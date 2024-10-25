@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Menu from "./Menu"; // Importa el componente Menu
+import Footer from "./Footer"; // Importa el componente Footer (asegúrate de que exista)
+import { useNavigate } from "react-router-dom"; // Importa useNavigate para la redirección
 
 const UserProfile = () => {
   const [userInfo, setUserInfo] = useState({});
   const token = localStorage.getItem("access_token");
+  const navigate = useNavigate(); // Hook para redirigir
 
   const config = {
     headers: { Authorization: `Bearer ${token}` },
@@ -28,10 +31,15 @@ const UserProfile = () => {
     }
   };
 
+  // Función para volver al dashboard
+  const handleBackToDashboard = () => {
+    navigate("/dashboard"); // Redirige al dashboard
+  };
+
   return (
-    <div className="bg-white text-black min-vh-100">
+    <div className="bg-white text-black min-vh-100 d-flex flex-column">
       <Menu userInfo={userInfo} /> {/* Usa el componente Menu y pasa userInfo */}
-      <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light text-dark">
+      <div className="flex-grow-1 d-flex justify-content-center align-items-center bg-light text-dark">
         {/* Fondo claro, tarjeta centrada en ancho y alto */}
         <div
           className="card bg-white shadow"
@@ -55,9 +63,18 @@ const UserProfile = () => {
                 <p><strong>Estado:</strong> {userInfo.estado ? "Activo" : "Inactivo"}</p>
               </div>
             </div>
+            {/* Botón para redirigir al dashboard */}
+            <div className="text-center mt-4">
+              <button className="btn btn-primary" onClick={handleBackToDashboard}>
+                Volver al Dashboard
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      <div style={{ marginBottom: "60px" }} /> {/* Espacio inferior agregado */}
+      <Footer /> {/* Añadir el componente Footer */}
     </div>
   );
 };

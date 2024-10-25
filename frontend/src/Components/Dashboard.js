@@ -32,7 +32,7 @@ const Dashboard = ({ token }) => { // variable para la clase
     }
 
     return (
-        <div className="dashboard-wrapper"> {/* Contenedor principal con flexbox */}
+        <div className="dashboard-wrapper" style={{ paddingTop: '50px' }}> {/* Ajuste de padding superior para evitar interferencia del menú */}
             <Menu userInfo={userInfo} /> {/* pasa el userInfo al componente Menu */}
 
             <div className="container mt-4">
@@ -130,6 +130,7 @@ const Dashboard = ({ token }) => { // variable para la clase
                 </div>
             </div>
 
+            <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}</div>
             <Footer /> {/* Añade el componente Footer */}
         </div>
     );

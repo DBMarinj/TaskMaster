@@ -90,7 +90,9 @@ const ChangePassword = () => {
     <div className="bg-white text-dark min-vh-100">
       {/* Pasa la información del usuario al componente Menu */}
       <Menu userInfo={userInfo} /> 
-      <div className="container">
+      
+      {/* Contenedor principal con margen superior */}
+      <div className="container" style={{ marginTop: '100px' }}> 
         <div className="card mt-4 bg-light">
           <div className="card-body">
             <h1 className="card-title my-4 text-center">CAMBIAR CONTRASEÑA</h1>

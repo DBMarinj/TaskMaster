@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import axios from 'axios';
 import EstadoForm from './EstadoForm'; // Componente para el formulario de crear/editar estados
 import EstadoList from './EstadoList'; // Componente para mostrar la lista de estados
@@ -91,7 +91,7 @@ function EstadoCRUD() {
   return (
     <div className="bg-white text-black min-vh-100"> {/* Aplicar el mismo fondo y color de texto */}
       <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
-      <div className="container mt-4" style={{ marginBottom: '80px' }}> {/* Añadir margen inferior */}
+      <div className="container" style={{ marginTop: '80px', marginBottom: '80px' }}> {/* Aplica margen superior de 100px y margen inferior */}
         {/* Card para gestionar los estados */}
         <div className="card bg-light"> {/* Añadida clase de fondo bg-light para un gris claro */}
           <div className="card-header text-center"> {/* Encabezado de la card centrado */}
