@@ -1,7 +1,7 @@
 /* Estilo para el título general sin sombra */
 .dashboard-title {
     font-size: 2.5rem; /* Ajusta el tamaño de letra para el título */
-    color: #00e0ff; /* Mismo color que user-name */
+    color: #12d3ec; /* Mismo color que user-name */
 }
 
 /* Estilo para el nombre del usuario */
@@ -17,7 +17,7 @@
     color: #00e0ff; /* Mismo color que user-name */
 }
 
-/* Estilo para los enlaces dentro de las cards */
+/* Estilo para los enlaces dentro de las cards con fondo oscuro */
 .custom-link {
     font-size: 1.2rem; /* Tamaño de letra más pequeño para los enlaces */
     color: #ffffff; /* Color blanco para los enlaces */
@@ -25,5 +25,63 @@
 }
 
 .custom-link:hover {
+    text-decoration: underline;
+}
+
+/* Estilo para los enlaces dentro de las cards con fondo blanco */
+.custom-link-black {
+    font-size: 1.2rem; /* Tamaño de letra más pequeño */
+    color: #f0eeee; /* Color negro para los enlaces */
+    text-decoration: none;
+}
+
+.custom-link-black:hover {
+    text-decoration: underline;
+}
+
+/* Estilo para mantener el footer en la parte inferior */
+.dashboard-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
+}
+
+/* Estilo para mantener el footer en la parte inferior */
+.footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+    margin-top: auto;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+}
+
+/* Nueva clase para título en color dark (gris oscuro) con estilo similar a dashboard-title */
+.dashboard-title-dark {
+    font-size: 2rem; /* Mismo tamaño que dashboard-title */
+    color: #343a40; /* Color dark (gris oscuro) */
+    font-weight: bold; /* Negrita para mantener el énfasis */
+    text-align: center; /* Alineación centrada */
+}
+
+/* Estilo para el contenedor del header */
+.app-header {
+    background-color: #343a40; /* Mismo color que el footer */
+    padding: 20px;
+    text-align: center;
+    color: white;
+    width: 100%;
+    position: relative;
+}
+
+/* Opcional: si el menú tiene enlaces, puedes darle estilo adicional */
+.app-header a {
+    color: white;
+    text-decoration: none;
+}
+
+.app-header a:hover {
     text-decoration: underline;
 }

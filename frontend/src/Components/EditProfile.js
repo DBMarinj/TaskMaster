@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate para la redirección
 import Menu from './Menu';  // Importar el componente Menu
-import './styles.css'; // Importa el archivo de estilos
+import './styles.css'; // Importar el archivo de estilos
 
 const EditProfile = () => {
     const [userData, setUserData] = useState({
@@ -17,6 +18,8 @@ const EditProfile = () => {
     const [message, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [userInfo, setUserInfo] = useState(null);  // Estado para almacenar la información del usuario
+
+    const navigate = useNavigate(); // Hook para navegar a otra ruta
 
     // Función para obtener la información del usuario desde el backend
     const fetchUserInfo = async () => {
@@ -120,6 +123,11 @@ const EditProfile = () => {
         }
     };
 
+    // Función para manejar la redirección al perfil
+    const handleViewProfile = () => {
+        navigate('/user-profile'); // Redirige a la página de perfil
+    };
+
     return (
         <div className="bg-white text-black min-vh-100">
             <Menu userInfo={userInfo} />  {/* Pasa la información del usuario al componente Menu */}
@@ -201,8 +209,19 @@ const EditProfile = () => {
                                     />
                                 </div>
 
-                                {/* Botón para guardar cambios */}
-                                <button type="submit" className="btn btn-primary btn-block mt-3">Guardar Cambios</button>
+                                {/* Botones para guardar cambios y ver perfil */}
+                                <div className="d-flex justify-content-between mt-3">
+                                    <button type="submit" className="btn btn-primary">
+                                        Guardar Cambios
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary"
+                                        onClick={handleViewProfile}
+                                    >
+                                        Ver Perfil
+                                    </button>
+                                </div>
                             </form>
                         )}
                     </div>

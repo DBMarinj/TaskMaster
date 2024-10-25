@@ -6,7 +6,7 @@ import axios from 'axios'; // Integración con la API REST
 // Desarrollando el componente
 const Login = ({ setToken }) => { //variable para la clase, () => eso es función anónima, abajo cuerpo de la función,settoken va entre {} ya que es una vble/se comunica con setToken del archivo app.js
     const [usuario, setUsuario] = useState(''); // Hook de estado para manejar el nombre de usuario
-    const [contrasena, setContrasena] = useState(''); 
+    const [contrasena, setContrasena] = useState(''); // Hook de estado para manejar la contraseña
     const [errores, setError] = useState(''); // Hook de estado para manejar los errores
     const navegar = useNavigate(); // Hook de navegación: usar para redirigir/useNavigate que importamos de react router dom
     const APPI_URL = 'http://127.0.0.1:8000/token/'; // URL de la API para la autenticación
@@ -42,6 +42,7 @@ const Login = ({ setToken }) => { //variable para la clase, () => eso es funció
                             value={usuario} 
                             onChange={(e) => {setUsuario(e.target.value); setError('');}} // Se limpia el error cuando se escribe
                             required                            
+                            autoComplete="off" // Desactiva el autocompletado para el usuario
                         />
                     </div>
 
@@ -56,6 +57,7 @@ const Login = ({ setToken }) => { //variable para la clase, () => eso es funció
                             value={contrasena}
                             onChange={(e) => setContrasena(e.target.value)} // Actualiza el estado con la contraseña
                             required
+                            autoComplete="new-password" // Desactiva el autocompletado para la contraseña
                         />                        
                     </div>
 

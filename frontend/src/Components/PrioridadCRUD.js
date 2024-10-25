@@ -3,6 +3,7 @@ import axios from 'axios';
 import PrioridadForm from './PrioridadFORM'; // Componente para el formulario de crear/editar prioridades
 import PrioridadList from './PrioridadList'; // Componente para mostrar la lista de prioridades
 import Menu from "./Menu"; // Importa el componente Menu
+import Footer from "./Footer"; // Importa el componente Footer
 
 const PrioridadCRUD = () => {
   const [prioridades, setPrioridades] = useState([]); // Estado para almacenar la lista de prioridades
@@ -92,7 +93,7 @@ const PrioridadCRUD = () => {
     <div className="bg-white text-black min-vh-100">
       <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
       <div className="container">
-        <div className="card mt-4 bg-light">
+        <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}
           <div className="card-body">
             <h3 className="card-title my-4 text-center">GESTIÓN PRIORIDADES</h3>
             <PrioridadForm onSave={handleSave} prioridadEdit={prioridadEdit} />
@@ -104,6 +105,7 @@ const PrioridadCRUD = () => {
           </div>
         </div>
       </div>
+      <Footer /> {/* Añade el componente Footer */}
     </div>
   );
 };

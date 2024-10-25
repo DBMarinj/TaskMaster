@@ -3,6 +3,7 @@ import axios from 'axios';
 import TipoTareasForm from './TipoTareasFORM';
 import TipoTareasList from './TipoTareasList';
 import Menu from "./Menu"; // Importa el componente Menu
+import Footer from "./Footer"; // Importa el componente Footer
 
 const TipoTareasCRUD = () => {
   const [tareas, setTareas] = useState([]);
@@ -82,7 +83,7 @@ const TipoTareasCRUD = () => {
     <div className="bg-white text-black min-vh-100">
       <Menu userInfo={userInfo} /> {/* Usa el componente Menu y pasa userInfo */}
       <div className="container">
-        <div className="card mt-4 bg-light">
+        <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}
           <div className="card-body">
             <h3 className="card-title my-4 text-center">GESTIÓN TAREAS</h3>
             <TipoTareasForm
@@ -97,6 +98,7 @@ const TipoTareasCRUD = () => {
           </div>
         </div>
       </div>
+      <Footer /> {/* Añade el componente Footer */}
     </div>
   );
 };

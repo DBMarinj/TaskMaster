@@ -20,7 +20,7 @@ function EtiquetaList({ etiquetas, onEdit, onDelete }) {
                 <td>{etiqueta.id_etiqueta}</td>
                 <td>{etiqueta.nombre}</td>
                 <td>
-                  <button className="btn btn-warning" onClick={() => onEdit(etiqueta)}>Editar</button>
+                  <button className="btn btn-primary mr-2" onClick={() => onEdit(etiqueta)}>Editar</button>
                   <button className="btn btn-danger" onClick={() => onDelete(etiqueta.id_etiqueta)}>Eliminar</button>
                 </td>
               </tr>

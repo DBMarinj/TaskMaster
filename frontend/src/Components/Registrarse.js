@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa Bootstrap para el estilo
 
-
 const Registrarse = () => {
     // Definición de estados para los datos del formulario
     const [celular, setCelular] = useState('');
@@ -12,6 +11,7 @@ const Registrarse = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [contrasena, setContrasena] = useState('');
+    const [mostrarContrasena, setMostrarContrasena] = useState(false); // Estado para controlar si se muestra la contraseña
     const [errores, setErrores] = useState('');
     const [mensajeExito, setMensajeExito] = useState('');
 
@@ -54,9 +54,13 @@ const Registrarse = () => {
         }
     };
 
+    // Función para manejar la redirección al hacer clic en "Volver"
+    const handleVolver = () => {
+        window.location.href = 'http://localhost:3000/'; // Redirige a la página de inicio
+    };
+
     return (
         <div className="bg-white text-dark min-vh-100"> {/* Aplica el mismo estilo que el menú */}
-            
             <div className="container mt-5">
                 <div className="row justify-content-center">
                     <div className="col-md-6">
@@ -110,12 +114,26 @@ const Registrarse = () => {
                                     <div className="form-group">
                                         <label>Contraseña</label>
                                         <input
-                                            type="password"
+                                            type={mostrarContrasena ? "text" : "password"} // Controla si se muestra como texto o password
                                             className="form-control"
                                             value={contrasena}
                                             onChange={(e) => setContrasena(e.target.value)}
+                                            autoComplete="new-password" // Desactiva el autocompletado para la contraseña
                                         />
                                     </div>
+                                    <div className="form-group form-check">
+                                        <input
+                                            type="checkbox"
+                                            className="form-check-input"
+                                            id="mostrarContrasena"
+                                            checked={mostrarContrasena}
+                                            onChange={() => setMostrarContrasena(!mostrarContrasena)} // Alterna el estado
+                                        />
+                                        <label className="form-check-label" htmlFor="mostrarContrasena">
+                                            Mostrar contraseña
+                                        </label>
+                                    </div>
+
                                     <div className="form-group">
                                         <label>Celular</label>
                                         <input
@@ -135,10 +153,21 @@ const Registrarse = () => {
                                         />
                                     </div>
 
-                                    {/* Botón para enviar el formulario */}
-                                    <button type="submit" className="btn btn-primary btn-block mt-3">
-                                        Registrarse
-                                    </button>
+                                    {/* Fila flexible para los botones */}
+                                    <div className="d-flex justify-content-between mt-3">
+                                        {/* Botón para enviar el formulario */}
+                                        <button type="submit" className="btn btn-primary">
+                                            Registrarse
+                                        </button>
+                                        {/* Botón para redirigir a la página principal */}
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary"
+                                            onClick={handleVolver}
+                                        >
+                                            Volver
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                         </div>

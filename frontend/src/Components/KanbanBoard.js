@@ -2,31 +2,44 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TaskColumn from './TaskColumn';
 import TaskFilters from './TaskFilters';
-import Menu from './Menu'; // Importa el componente Menu
+import Menu from "./Menu"; // Importa el componente Menu
+import Footer from "./Footer"; // Importa el componente Footer
 
+// Componente principal del tablero Kanban
 const KanbanBoard = () => {
-    const [tasks, setTasks] = useState([]);
-    const [filteredTasks, setFilteredTasks] = useState([]);
-    const [filter, setFilter] = useState({
+    const [tasks, setTasks] = useState([]); // Estado para todas las tareas
+    const [filteredTasks, setFilteredTasks] = useState({ // Estado para tareas filtradas por columna
+        pendiente: [],
+        enProgreso: [],
+        completado: []
+    });
+    const [filter, setFilter] = useState({ // Criterios de filtrado por columna
         pendiente: '',
         enProgreso: '',
         completado: ''
     });
     const [userInfo, setUserInfo] = useState(null); // Estado para la información del usuario
 
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token'); // Obtener el token del localStorage
     const config = { headers: { Authorization: `Bearer ${token}` } };
 
-    // Función para obtener las tareas desde el servidor
+    // useEffect para cargar las tareas y la información del usuario al montar el componente
+    useEffect(() => {
+        if (token) {
+            fetchTasks(); // Carga las tareas
+            fetchUserInfo(); // Carga la información del usuario
+        } else {
+            console.error("No token found");
+        }
+    }, [token]);
+
+    // Función para obtener las tareas desde la API
     const fetchTasks = async () => {
         try {
-            const response = await axios.get(
-                'http://127.0.0.1:8000/tareas/tareas/',
-                config
-            );
-            console.log('Tareas obtenidas desde la API:', response.data); // Verificar los datos de la API
+            const response = await axios.get('http://127.0.0.1:8000/tareas/tareas/', config);
+            console.log("Tareas obtenidas desde la API:", response.data);
             setTasks(response.data);
-            setFilteredTasks(response.data); // Inicialmente mostrar todas las tareas
+            applyAllFilters(response.data); // Aplica filtros iniciales
         } catch (error) {
             console.error('Error fetching tasks:', error);
         }
@@ -35,158 +48,126 @@ const KanbanBoard = () => {
     // Función para obtener la información del usuario desde el backend
     const fetchUserInfo = async () => {
         try {
-            const response = await axios.get(
-                'http://127.0.0.1:8000/current-user/', // Ajusta la ruta según la API
-                config
-            );
-            setUserInfo(response.data); // Actualiza el estado con la información del usuario
-            console.log('User info fetched successfully:', response.data);
+            const response = await axios.get('http://127.0.0.1:8000/current-user/', config);
+            console.log("User info fetched successfully:", response.data);
+            setUserInfo(response.data); // Almacena la información del usuario
         } catch (error) {
-            console.error('Error fetching user info:', error);
+            console.error("Error fetching user info:", error);
         }
     };
 
-    useEffect(() => {
-        fetchTasks(); // Llamada para obtener las tareas al cargar el componente
-        fetchUserInfo(); // Llamada para obtener la información del usuario
-    }, []);
-
-    // Función para aplicar filtros por estado
+    // Aplica un filtro a una columna específica
     const applyFilter = (estado, criteria) => {
-        setFilter((prevFilter) => ({
-            ...prevFilter,
-            [estado]: criteria
-        }));
+        setFilter(prevFilter => ({ ...prevFilter, [estado]: criteria }));
+        const stateTasks = tasks.filter(task => task.estado === getStatusCode(estado));
+        const sortedTasks = sortTasks(stateTasks, criteria);
 
-        let filteredStateTasks = tasks.filter(
-            (task) => task.estado === getStatusCode(estado)
-        );
-
-        if (criteria === 'priority') {
-            filteredStateTasks.sort((a, b) => a.prioridad - b.prioridad);
-        } else if (criteria === 'due_date') {
-            filteredStateTasks.sort(
-                (a, b) =>
-                    new Date(a.fecha_vencimiento) - new Date(b.fecha_vencimiento)
-            );
-        }
-
-        setFilteredTasks((prevFilteredTasks) => ({
+        setFilteredTasks(prevFilteredTasks => ({
             ...prevFilteredTasks,
-            [estado]: filteredStateTasks
+            [estado]: sortedTasks
         }));
-
-        console.log(`Tareas filtradas para estado ${estado}:`, filteredStateTasks);
     };
 
-    // Función auxiliar para obtener el código de estado
+    // Aplica filtros a todas las columnas
+    const applyAllFilters = (allTasks) => {
+        ['pendiente', 'enProgreso', 'completado'].forEach(estado => {
+            const stateTasks = allTasks.filter(task => task.estado === getStatusCode(estado));
+            const sortedTasks = sortTasks(stateTasks, filter[estado]);
+
+            setFilteredTasks(prevFilteredTasks => ({
+                ...prevFilteredTasks,
+                [estado]: sortedTasks
+            }));
+        });
+    };
+
+    // Ordena las tareas según la prioridad o fecha de vencimiento
+    const sortTasks = (tasks, criteria) => {
+        if (criteria === 'priority') {
+            return [...tasks].sort((a, b) => a.prioridad - b.prioridad);
+        }
+        if (criteria === 'due_date') {
+            return [...tasks].sort((a, b) => new Date(a.fecha_vencimiento) - new Date(b.fecha_vencimiento));
+        }
+        return tasks;
+    };
+
+    // Devuelve el código del estado según el nombre
     const getStatusCode = (estado) => {
         switch (estado) {
-            case 'pendiente':
-                return 7;
-            case 'enProgreso':
-                return 8;
-            case 'completado':
-                return 9;
-            default:
-                return null;
+            case 'pendiente': return 7;
+            case 'enProgreso': return 8;
+            case 'completado': return 9;
+            default: return null;
         }
     };
 
-    // Función para actualizar el estado de una tarea
+    // Actualiza el estado de una tarea
     const updateTaskStatus = async (taskId, newStatus) => {
         try {
-            const updatedTask = tasks.find(
-                (task) => task.id_tarea === taskId
-            );
-            console.log('Tarea antes de actualizar el estado:', updatedTask);
+            const updatedTask = tasks.find(task => task.id_tarea === taskId);
+            console.log("Tarea antes de actualizar el estado:", updatedTask);
             updatedTask.estado = newStatus;
 
-            await axios.put(
-                `http://127.0.0.1:8000/tareas/tareas/${taskId}/`,
-                updatedTask,
-                config
+            await axios.put(`http://127.0.0.1:8000/tareas/tareas/${taskId}/`, updatedTask, config);
+            const updatedTasks = tasks.map(task =>
+                task.id_tarea === taskId ? updatedTask : task
             );
-            setTasks(
-                tasks.map((task) =>
-                    task.id_tarea === taskId ? updatedTask : task
-                )
-            );
-
-            // Aplicar los filtros después de la actualización del estado
-            applyFilter('pendiente', filter.pendiente);
-            applyFilter('enProgreso', filter.enProgreso);
-            applyFilter('completado', filter.completado);
+            setTasks(updatedTasks);
+            applyAllFilters(updatedTasks);
         } catch (error) {
             console.error('Error updating task status:', error);
         }
     };
 
+    // Elimina una tarea
+    const deleteTask = async (taskId) => {
+        try {
+            await axios.delete(`http://127.0.0.1:8000/tareas/tareas/${taskId}/`, config);
+            const remainingTasks = tasks.filter(task => task.id_tarea !== taskId);
+            setTasks(remainingTasks);
+            applyAllFilters(remainingTasks);
+        } catch (error) {
+            console.error('Error deleting task:', error);
+        }
+    };
+
     return (
         <div className="bg-white text-black min-vh-100">
-            <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
+            {/* Envoltura con estilo de header sticky */}
+            <div className="sticky-header">
+                <Menu userInfo={userInfo} />
+            </div>
             <div className="container">
-                <div className="card mt-4 bg-light">
+                <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}
                     <div className="card-body">
-                        <h1 className="card-title my-4 text-center">
-                            TABLERO DE TAREAS (KANBAN)
-                        </h1>
-                        
-                        {/* Filtros */}
+                        <h1 className="card-title my-4 text-center">TABLERO DE TAREAS (KANBAN)</h1>
                         <TaskFilters applyFilter={applyFilter} />
-
                         <div className="row">
-                            {/* Columna de tareas pendientes */}
                             <TaskColumn
                                 title="Pendiente"
-                                tasks={
-                                    filteredTasks['pendiente'] ||
-                                    tasks.filter((task) => task.estado === 7)
-                                }
-                                onMoveForward={(taskId) =>
-                                    updateTaskStatus(taskId, 8)
-                                }
-                                onApplyFilter={(criteria) =>
-                                    applyFilter('pendiente', criteria)
-                                }
+                                tasks={filteredTasks['pendiente']}
+                                onMoveForward={(taskId) => updateTaskStatus(taskId, 8)}
+                                onDeleteTask={deleteTask}
                             />
-
-                            {/* Columna de tareas en progreso */}
                             <TaskColumn
                                 title="En Progreso"
-                                tasks={
-                                    filteredTasks['enProgreso'] ||
-                                    tasks.filter((task) => task.estado === 8)
-                                }
-                                onMoveForward={(taskId) =>
-                                    updateTaskStatus(taskId, 9)
-                                }
-                                onMoveBackward={(taskId) =>
-                                    updateTaskStatus(taskId, 7)
-                                }
-                                onApplyFilter={(criteria) =>
-                                    applyFilter('enProgreso', criteria)
-                                }
+                                tasks={filteredTasks['enProgreso']}
+                                onMoveForward={(taskId) => updateTaskStatus(taskId, 9)}
+                                onMoveBackward={(taskId) => updateTaskStatus(taskId, 7)}
+                                onDeleteTask={deleteTask}
                             />
-
-                            {/* Columna de tareas completadas */}
                             <TaskColumn
                                 title="Completado"
-                                tasks={
-                                    filteredTasks['completado'] ||
-                                    tasks.filter((task) => task.estado === 9)
-                                }
-                                onMoveBackward={(taskId) =>
-                                    updateTaskStatus(taskId, 8)
-                                }
-                                onApplyFilter={(criteria) =>
-                                    applyFilter('completado', criteria)
-                                }
+                                tasks={filteredTasks['completado']}
+                                onMoveBackward={(taskId) => updateTaskStatus(taskId, 8)}
+                                onDeleteTask={deleteTask}
                             />
                         </div>
                     </div>
                 </div>
             </div>
+            <Footer /> {/* Añade el componente Footer */}
         </div>
     );
 };

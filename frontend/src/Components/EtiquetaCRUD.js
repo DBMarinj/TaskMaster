@@ -3,6 +3,7 @@ import axios from 'axios';
 import EtiquetaList from './EtiquetaList'; // Componente para mostrar la lista de etiquetas
 import EtiquetaForm from './EtiquetaFORM'; // Componente para el formulario de crear/editar etiquetas
 import Menu from "./Menu"; // Importa el componente Menu
+import Footer from "./Footer"; // Importa el componente Footer
 
 function EtiquetaCRUD() {
   const [etiquetas, setEtiquetas] = useState([]); // Estado para almacenar la lista de etiquetas
@@ -91,7 +92,7 @@ function EtiquetaCRUD() {
     <div className="bg-white text-black min-vh-100">
       <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
       <div className="container">
-        <div className="card mt-4 bg-light"> {/* Añadida clase de fondo bg-light para un gris claro */}
+        <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}
           <div className="card-body">
             <h3 className="card-title my-4 text-center">GESTIÓN ETIQUETAS</h3> {/* Título centrado */}
             <EtiquetaForm onSave={handleSave} etiquetaEdit={etiquetaEdit} />
@@ -105,6 +106,7 @@ function EtiquetaCRUD() {
           </div>
         </div>
       </div>
+      <Footer /> {/* Añade el componente Footer */}
     </div>
   );
 }

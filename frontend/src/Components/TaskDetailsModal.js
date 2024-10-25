@@ -29,6 +29,14 @@ const getNombrePrioridad = (idPrioridad) => {
     }
 };
 
+// Función para obtener el nombre de la etiqueta
+const getNombreEtiqueta = (etiquetas) => {
+    if (!etiquetas || etiquetas.length === 0) {
+        return 'Sin etiqueta';
+    }
+    return etiquetas[0]?.nombre || 'Sin nombre'; // Mostrar solo la primera etiqueta si hay más de una
+};
+
 const TaskDetailsModal = ({ show, handleClose, task }) => {
     if (!task) return null; // Si no hay tarea seleccionada, no mostrar nada
 
@@ -45,6 +53,8 @@ const TaskDetailsModal = ({ show, handleClose, task }) => {
                 <p><strong>Fecha de Vencimiento:</strong> {task.fecha_vencimiento ? new Date(task.fecha_vencimiento).toLocaleDateString() : 'Sin fecha'}</p>
                 {/* Mostrar el nombre del estado */}
                 <p><strong>Estado:</strong> {getNombreEstado(task.estado)}</p>
+                {/* Mostrar las etiquetas */}
+                <p><strong>Etiqueta:</strong> {getNombreEtiqueta(task.etiquetas)}</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>

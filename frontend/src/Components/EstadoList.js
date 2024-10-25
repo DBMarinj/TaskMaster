@@ -20,13 +20,13 @@ function EstadoList({ estados, onEdit, onDelete }) {
                 <td>{estado.nombre}</td>
                 <td>
                   <button
-                    className="btn btn-sm btn-warning"
+                    className="btn btn-primary mr-2"
                     onClick={() => onEdit(estado)}
                   >
                     Editar
                   </button>
                   <button
-                    className="btn btn-sm btn-danger"
+                    className="btn btn-danger"
                     onClick={() => onDelete(estado.id_estado)}
                   >
                     Eliminar

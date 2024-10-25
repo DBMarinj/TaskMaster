@@ -19,13 +19,13 @@ const PrioridadList = ({ prioridades, onEdit, onDelete }) => {
                 <td>{prioridad.nombre}</td>
                 <td>
                   <button
-                    className="btn btn-sm btn-warning me-2"
+                    className="btn btn-primary mr-2"
                     onClick={() => onEdit(prioridad)}
                   >
                     Editar
                   </button>
                   <button
-                    className="btn btn-sm btn-danger"
+                    className="btn btn-danger"
                     onClick={() => onDelete(prioridad.id_prioridad)}
                   >
                     Eliminar

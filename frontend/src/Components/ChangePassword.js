@@ -3,61 +3,48 @@ import axios from 'axios';
 import Menu from './Menu';
 
 const ChangePassword = () => {
-  // Declaración de estados
+  // Estados para las contraseñas y mensajes
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const [userInfo, setUserInfo] = useState(null);  // Estado para almacenar la información del usuario
-  const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [passwordChanged, setPasswordChanged] = useState(false);
+  const [userInfo, setUserInfo] = useState(null); // Información del usuario
 
-  // Función para obtener la información del usuario desde el backend
+  // Estados para mostrar u ocultar las contraseñas
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Función para alternar la visibilidad de las contraseñas
+  const togglePasswordVisibility = (field) => {
+    if (field === 'old') setShowOldPassword(!showOldPassword);
+    else if (field === 'new') setShowNewPassword(!showNewPassword);
+    else if (field === 'confirm') setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  // Función para obtener la información del usuario desde la API
   const fetchUserInfo = async () => {
     try {
       const token = localStorage.getItem('access_token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.get('http://127.0.0.1:8000/current-user/', config); // Ajusta la ruta según la API
-      setUserInfo(response.data); // Actualiza el estado con la información del usuario
-      console.log("User info fetched successfully:", response.data);
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const response = await axios.get('http://127.0.0.1:8000/current-user/', config);
+      setUserInfo(response.data); // Guarda la información del usuario en el estado
+      console.log('User info fetched successfully:', response.data);
     } catch (error) {
-      console.error("Error fetching user info:", error);
+      console.error('Error fetching user info:', error);
     }
   };
 
   useEffect(() => {
-    // Obtener datos del usuario logueado
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get('http://127.0.0.1:8000/current-user/', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUserData(response.data); // Guardar datos del usuario, incluyendo el ID
-        setLoading(false); // Finalizar carga
-      } catch (error) {
-        console.error('Error al obtener los datos del usuario:', error);
-        setErrorMessage('Error al cargar los datos del perfil.');
-        setLoading(false); // Detener carga en caso de error
-      }
-    };
-
-    fetchUserData(); // Llamar a la función para obtener datos del usuario
-    fetchUserInfo();  // Llamar a la función para obtener la información del usuario
+    fetchUserInfo(); // Obtener datos del usuario al cargar el componente
   }, []);
 
-  // Maneja el envío del formulario
+  // Maneja el envío del formulario de cambio de contraseña
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      setMessage("Las nuevas contraseñas no coinciden.");
+      setMessage('Las nuevas contraseñas no coinciden.');
       return;
     }
 
@@ -70,72 +57,125 @@ const ChangePassword = () => {
           confirm_password: confirmPassword,
         },
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-          },
+          headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
         }
       );
-      setMessage(response.data.status);
+      setMessage(response.data.status); // Muestra el estado de la operación
+      setPasswordChanged(true); // Marca que la contraseña ha sido cambiada
     } catch (error) {
-      console.error("Error al cambiar la contraseña:", error);
-      setMessage(
-        error.response?.data?.old_password || 
-        error.response?.data?.confirm_password || 
-        "Error al cambiar la contraseña."
-      );
+      console.error('Error durante el cambio de contraseña:', error);
+      
+      // Verifica si el error es por contraseña actual incorrecta
+      if (error.response && error.response.status === 400 && error.response.data.old_password) {
+        setMessage('Error, la contraseña actual es incorrecta.');
+      
+      // Verifica si el error es por no cumplir con los requisitos de la nueva contraseña
+      } else if (error.response && error.response.status === 400 && error.response.data.new_password) {
+        setMessage(`No cumple con los requisitos para la nueva contraseña: ${error.response.data.new_password.join(', ')}`);
+      
+      // Manejamos otros posibles errores
+      } else {
+        setMessage('Error desconocido al intentar cambiar la contraseña.');
+      }
     }
   };
 
-  if (loading) {
-    return <div>Cargando datos del usuario...</div>;
-  }
+  // Maneja el cierre de sesión y redirige al usuario
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    window.location.href = 'http://localhost:3000/';
+  };
 
   return (
     <div className="bg-white text-dark min-vh-100">
-      <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
+      {/* Pasa la información del usuario al componente Menu */}
+      <Menu userInfo={userInfo} /> 
       <div className="container">
-        <div className="card mt-4 bg-light"> {/* Añadida clase de fondo bg-light para un gris claro */}
+        <div className="card mt-4 bg-light">
           <div className="card-body">
             <h1 className="card-title my-4 text-center">CAMBIAR CONTRASEÑA</h1>
-            {errorMessage && <div className="alert alert-danger text-center">{errorMessage}</div>}
             {message && <div className="alert alert-info text-center">{message}</div>}
 
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>Contraseña Actual</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                  required
-                  autoComplete="off"
-                />
+                <div className="input-group">
+                  <input
+                    type={showOldPassword ? 'text' : 'password'}
+                    className="form-control"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    required
+                    autoComplete="new-password"
+                  />
+                  <div className="input-group-append">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => togglePasswordVisibility('old')}
+                    >
+                      {showOldPassword ? '👁‍🗨' : '👁'}
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div className="form-group">
                 <label>Nueva Contraseña</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  required
-                />
+                <div className="input-group">
+                  <input
+                    type={showNewPassword ? 'text' : 'password'}
+                    className="form-control"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                    autoComplete="new-password"
+                  />
+                  <div className="input-group-append">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => togglePasswordVisibility('new')}
+                    >
+                      {showNewPassword ? '👁‍🗨' : '👁'}
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div className="form-group">
                 <label>Confirmar Nueva Contraseña</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                />
+                <div className="input-group">
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    className="form-control"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    autoComplete="new-password"
+                  />
+                  <div className="input-group-append">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => togglePasswordVisibility('confirm')}
+                    >
+                      {showConfirmPassword ? '👁‍🗨' : '👁'}
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <button type="submit" className="btn btn-primary btn-block mt-3">Cambiar Contraseña</button>
+              <div className="d-flex justify-content-between">
+                <button type="submit" className="btn btn-primary mt-3">
+                  Cambiar Contraseña
+                </button>
+                {passwordChanged && (
+                  <button type="button" className="btn btn-primary mt-3" onClick={handleLogout}>
+                    Volver a Autenticarme
+                  </button>
+                )}
+              </div>
             </form>
           </div>
         </div>

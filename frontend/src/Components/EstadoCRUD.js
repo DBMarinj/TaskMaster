@@ -3,6 +3,7 @@ import axios from 'axios';
 import EstadoForm from './EstadoForm'; // Componente para el formulario de crear/editar estados
 import EstadoList from './EstadoList'; // Componente para mostrar la lista de estados
 import Menu from "./Menu"; // Importa el componente Menu
+import Footer from "./Footer"; // Importa el componente Footer
 
 function EstadoCRUD() {
   const [estados, setEstados] = useState([]); // Estado para almacenar la lista de estados
@@ -90,7 +91,7 @@ function EstadoCRUD() {
   return (
     <div className="bg-white text-black min-vh-100"> {/* Aplicar el mismo fondo y color de texto */}
       <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
-      <div className="container mt-4"> {/* Añadir margen superior */}
+      <div className="container mt-4" style={{ marginBottom: '80px' }}> {/* Añadir margen inferior */}
         {/* Card para gestionar los estados */}
         <div className="card bg-light"> {/* Añadida clase de fondo bg-light para un gris claro */}
           <div className="card-header text-center"> {/* Encabezado de la card centrado */}
@@ -109,6 +110,7 @@ function EstadoCRUD() {
           </div>
         </div>
       </div>
+      <Footer /> {/* Añade el componente Footer */}
     </div>
   );
 }
