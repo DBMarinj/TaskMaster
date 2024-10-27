@@ -32,7 +32,7 @@ const Dashboard = ({ token }) => { // variable para la clase
     }
 
     return (
-        <div className="dashboard-wrapper" style={{ paddingTop: '50px' }}> {/* Ajuste de padding superior para evitar interferencia del menú */}
+        <div className="dashboard-wrapper login-board bg-light-green" style={{ paddingTop: '50px' }}> {/* Ajuste de padding superior y fondo en verde pastel */}
             <Menu userInfo={userInfo} /> {/* pasa el userInfo al componente Menu */}
 
             <div className="container mt-4">
@@ -40,7 +40,7 @@ const Dashboard = ({ token }) => { // variable para la clase
                     <div className="card-body">
 
                         {/* Card que envuelve el título y el nombre del usuario */}
-                        <div className="card bg-dark text-white mb-4"> {/* Fondo bg-dark para esta sección */}
+                        <div className="card bg-beige text-white mb-4"> {/* Cambiado fondo a bg-beige para armonizar con el verde pastel */}
                             <div className="card-body text-center">
                                 {/* Título de bienvenida con el nombre del usuario */}
                                 <h1 className="my-4 dashboard-title">Bienvenido al Dashboard</h1> 
@@ -51,17 +51,17 @@ const Dashboard = ({ token }) => { // variable para la clase
                         </div>
 
                         {/* Nueva tarjeta que envuelve las opciones de Usuario y Tareas */}
-                        <div className="card mb-4 text-center bg-white"> {/* Fondo blanco */}
+                        <div className="card mb-4 text-center bg-beige"> {/* Fondo beige */}
                             <div className="card-header">
-                            <h4 className="dashboard-title-dark">GESTIONAR USUARIO - TAREAS</h4>
-                            <hr className="bg-white" /> {/* Cambia el color a blanco */}
+                                <h4 className="dashboard-title-dark">GESTIONAR USUARIO - TAREAS</h4>
+                                <hr className="bg-white" /> {/* Cambia el color a blanco */}
                             </div>
                             <div className="card-body">
                                 <div className="row mt-5">
 
                                     {/* Card de Usuario */}
                                     <div className="col-md-6 mb-4">
-                                        <div className="card bg-dark text-white h-100 text-center"> 
+                                        <div className="card bg-beige text-dark h-100 text-center"> {/* Cambiado a bg-beige */}
                                             <div className="card-header card-title text-uppercase"> 
                                                 <h5 className="dashboard-title">USUARIO</h5> 
                                                 <hr className="bg-white" />  {/* Cambia el color a blanco */}
@@ -85,7 +85,7 @@ const Dashboard = ({ token }) => { // variable para la clase
 
                                     {/* Card de Tareas */}
                                     <div className="col-md-6 mb-4">
-                                        <div className="card bg-dark text-white h-100 text-center">
+                                        <div className="card bg-beige text-dark h-100 text-center"> {/* Cambiado a bg-beige */}
                                             <div className="card-header card-title text-uppercase">
                                                 <h5 className="dashboard-title">TAREAS</h5> 
                                                 <hr className="bg-white" />  {/* Cambia el color a blanco */}
