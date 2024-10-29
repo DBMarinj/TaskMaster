@@ -90,7 +90,7 @@ const PrioridadCRUD = () => {
   };
 
   return (
-    <div className="bg-white text-black min-vh-100">
+    <div className="dashboard-wrapper login-board bg-light-green" style={{ paddingTop: '50px' }}> {/* Aplicación del mismo estilo de fondo del Dashboard */}
       <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
       <div className="container" style={{ marginTop: '80px' }}> {/* Aplica margen superior de 50px */}
         <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}

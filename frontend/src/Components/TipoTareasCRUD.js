@@ -4,6 +4,7 @@ import TipoTareasForm from './TipoTareasFORM';
 import TipoTareasList from './TipoTareasList';
 import Menu from "./Menu"; // Importa el componente Menu
 import Footer from "./Footer"; // Importa el componente Footer
+import './styles.css'; // Aseguramos que se importen los estilos generales
 
 // Componente principal para la gestión de tareas
 const TipoTareasCRUD = () => {
@@ -90,7 +91,7 @@ const TipoTareasCRUD = () => {
   };
 
   return (
-    <div className="cork-background text-black"> {/* Aplicación de estilo de fondo tipo corcho */}
+    <div className="dashboard-wrapper login-board bg-light-green" style={{ paddingTop: '50px' }}> {/* Aplicación del mismo estilo de fondo del Dashboard */} 
       <Menu userInfo={userInfo} /> {/* Usa el componente Menu y pasa userInfo */}
       <div className="container" style={{ marginTop: '80px' }}> {/* Ajuste de margen superior */}
         <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}

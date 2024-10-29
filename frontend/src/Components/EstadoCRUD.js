@@ -89,9 +89,9 @@ function EstadoCRUD() {
   };
 
   return (
-    <div className="bg-white text-black min-vh-100"> {/* Aplicar el mismo fondo y color de texto */}
+    <div className="dashboard-wrapper login-board bg-light-green" style={{ paddingTop: '50px' }}> {/* Aplicación del mismo estilo de fondo del Dashboard */}
       <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
-      <div className="container" style={{ marginTop: '80px', marginBottom: '80px' }}> {/* Aplica margen superior de 100px y margen inferior */}
+      <div className="container" style={{ marginTop: '80px', marginBottom: '80px' }}> {/* Aplica margen superior e inferior */}
         {/* Card para gestionar los estados */}
         <div className="card bg-light"> {/* Añadida clase de fondo bg-light para un gris claro */}
           <div className="card-header text-center"> {/* Encabezado de la card centrado */}

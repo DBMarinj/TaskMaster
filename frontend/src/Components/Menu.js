@@ -50,6 +50,11 @@ const Menu = ({ userInfo }) => {
 
                         {/* Opción para visualizar el tablero Kanban, redirige a /kanban */}
                         <NavDropdown.Item as={Link} to="/kanban" style={{ color: '#00e0ff' }}>Tablero Kanban</NavDropdown.Item>
+
+                        {/* Enlace para descargar el archivo PDF */}
+                        <NavDropdown.Item href="/Manual%20TASK%20MASTER%20APP.pdf" download style={{ color: '#00e0ff' }}>
+                            Descargar Manual TASK MASTER APP
+                        </NavDropdown.Item>
                     </NavDropdown>                   
 
                     {/* Submenú que muestra el nombre del usuario logueado, siempre al final */}

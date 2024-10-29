@@ -126,3 +126,24 @@
 .bg-light-red {
     background-color: #f7a8a9;
 }
+
+/* Tarjetas pequeñas de fondo para EstadoCRUD */
+.estado-crud-container {
+    position: relative; /* Asegura que las tarjetas pequeñas se posicionen en relación con este contenedor */
+    overflow: hidden; /* Evita que las tarjetas se desborden */
+}
+
+.small-card-estado {
+    position: absolute;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0.75;
+    z-index: 0; /* Asegura que estén detrás del contenido principal */
+    transition: transform 0.3s ease-in-out;
+}
+
+.small-card-estado:hover {
+    transform: scale(1.1);
+}

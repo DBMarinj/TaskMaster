@@ -133,7 +133,7 @@ const KanbanBoard = () => {
     };
 
     return (
-        <div className="bg-white text-black min-vh-100">
+        <div className="dashboard-wrapper login-board bg-light-green" style={{ paddingTop: '50px' }}> {/* Aplicación del mismo estilo de fondo del Dashboard */} 
             {/* Envoltura con estilo de header sticky */}
             <div className="sticky-header">
                 <Menu userInfo={userInfo} />

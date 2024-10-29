@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Menu from './Menu';
+import Footer from "./Footer"; // Importa el componente Footer
+import './styles.css'; // Asegúrate de importar los estilos para mantener la misma apariencia
 
 const ChangePassword = () => {
   // Estados para las contraseñas y mensajes
@@ -87,12 +89,11 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="bg-white text-dark min-vh-100">
-      {/* Pasa la información del usuario al componente Menu */}
-      <Menu userInfo={userInfo} /> 
+    <div className="dashboard-wrapper login-board bg-light-green min-vh-100"> {/* Fondo y estilo de wrapper similares al archivo Dashboard */}
+      <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
       
       {/* Contenedor principal con margen superior */}
-      <div className="container" style={{ marginTop: '100px' }}> 
+      <div className="container" style={{ paddingTop: '50px' }}> 
         <div className="card mt-4 bg-light">
           <div className="card-body">
             <h1 className="card-title my-4 text-center">CAMBIAR CONTRASEÑA</h1>
@@ -182,6 +183,7 @@ const ChangePassword = () => {
           </div>
         </div>
       </div>
+      <Footer /> {/* Añade el componente Footer */}
     </div>
   );
 };

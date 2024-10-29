@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Importar useNavigate para la redirección
 import Menu from './Menu';  // Importar el componente Menu
@@ -130,7 +130,7 @@ const EditProfile = () => {
     };
 
     return (
-        <div className="bg-white text-black min-vh-100">
+        <div className="bg-light-green text-dark min-vh-100"> {/* Aplicar el mismo fondo y color de texto */} 
             <Menu userInfo={userInfo} />  {/* Pasa la información del usuario al componente Menu */}
             <div className="container" style={{ marginTop: '80px' }}>  {/* Aplica margen superior de 100px */}
                 <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}
