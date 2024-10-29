@@ -18,8 +18,8 @@ class AuthAPITestCase(APITestCase):
     def test_login_incorrecto_data_real(self):#información que se encuentra en la BD
         # Datos correctos para hacer login
         data = {
-            'username': 'Amarin',
-            'password': 'Arturo554*'
+            'username': 'Mstudios',
+            'password': 'Mstudios24**'
         }
         response = self.client.post(self.login_url, data)
        
