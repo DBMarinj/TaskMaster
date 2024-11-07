@@ -60,7 +60,7 @@ const Registrarse = () => {
     };
 
     return (
-        <div className="bg-white text-dark min-vh-100"> {/* Aplica el mismo estilo que el menú */}
+        <div className="bg-light-green min-vh-100 d-flex align-items-center"> {/* Asegura el fondo verde claro en todo el viewport */}
             <div className="container mt-5">
                 <div className="row justify-content-center">
                     <div className="col-md-6">

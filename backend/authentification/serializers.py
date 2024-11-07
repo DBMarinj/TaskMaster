@@ -35,7 +35,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             'estado': {'required': False}  # Hacer el campo 'estado' opcional
         }
 
-    def create(self, validated_data):
+    def create(self, validated_data):# creación de un nuevo usuario usando un serializador, dentro del método create. Este método toma un diccionario de datos validados (validated_data) como entrada, lo que significa que los datos han pasado las validaciones establecidas en el serializador.
         # Usar un valor por defecto si 'estado' no está presente
         user = User.objects.create_user(
             username=validated_data['username'],
@@ -81,7 +81,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
         return data
 
-class PasswordResetRequestSerializer(serializers.Serializer):
+class PasswordResetRequestSerializer(serializers.Serializer):#Solicita el correo electrónico del usuario que quiere recuperar su contraseña y verifica que exista en la base de datos.
     email = serializers.EmailField()
 
     def validate_email(self, value):
@@ -90,7 +90,7 @@ class PasswordResetRequestSerializer(serializers.Serializer):
             raise serializers.ValidationError("No hay ningún usuario con este correo.")
         return value
 
-class SetNewPasswordSerializer(serializers.Serializer):
+class SetNewPasswordSerializer(serializers.Serializer):#Valida y establece la nueva contraseña. Se asegura que new_password y confirm_password coincidan antes de actualizar la contraseña
     new_password = serializers.CharField(write_only=True, min_length=6)
     confirm_password = serializers.CharField(write_only=True, min_length=6)
 

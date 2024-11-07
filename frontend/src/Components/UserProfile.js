@@ -32,17 +32,17 @@ const UserProfile = () => {
   };
 
   // Función para volver al dashboard
-  const handleBackToDashboard = () => {
-    navigate("/dashboard"); // Redirige al dashboard
+  const handleBackToKanban = () => {
+    navigate("/kanban"); // Redirige al dashboard
   };
 
   return (
-    <div className="bg-white text-black min-vh-100 d-flex flex-column">
+    <div className="dashboard-wrapper bg-light-green text-black min-vh-100 d-flex flex-column">
       <Menu userInfo={userInfo} /> {/* Usa el componente Menu y pasa userInfo */}
-      <div className="flex-grow-1 d-flex justify-content-center align-items-center bg-light text-dark">
-        {/* Fondo claro, tarjeta centrada en ancho y alto */}
+      <div className="flex-grow-1 d-flex justify-content-center align-items-center bg-light-green text-dark">
+        {/* Fondo verde pastel, tarjeta centrada en ancho y alto */}
         <div
-          className="card bg-white shadow"
+          className="card bg-light-green shadow"
           style={{ maxWidth: "800px", width: "100%" }} // Cambia el maxWidth a 800px
         >
           <div className="card-body">
@@ -65,8 +65,8 @@ const UserProfile = () => {
             </div>
             {/* Botón para redirigir al dashboard */}
             <div className="text-center mt-4">
-              <button className="btn btn-primary" onClick={handleBackToDashboard}>
-                Volver al Dashboard
+              <button className="btn btn-primary" onClick={handleBackToKanban}>
+                Volver al Tablero kanban
               </button>
             </div>
           </div>

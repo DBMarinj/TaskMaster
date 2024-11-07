@@ -18,16 +18,16 @@ const Login = ({ setToken }) => {
             const respuesta = await axios.post(APPI_URL, { "username": usuario, "password": contrasena }); // Realiza la petición POST a la API con usuario y contraseña
             localStorage.setItem('access_token', respuesta.data.access); // Guardamos el token de acceso en el almacenamiento local
             setToken(respuesta.data.access); // Actualizamos el estado con el token
-            navegar('/dashboard'); // Redirigimos al usuario al dashboard
+            navegar('/kanban'); // Redirigimos al usuario al tablero kanban
         } catch (error) { 
             setError('Credenciales incorrectas'); // Si ocurre un error, se muestra el mensaje de error
         }
     };
 
     return (
-        <div className="board-container d-flex justify-content-center align-items-center vh-100"> {/* Fondo estilo corcho */}
+        <div className="board-container d-flex justify-content-center align-items-center vh-100 bg-light-green"> {/* Fondo verde pastel */}
             {/* Tarjeta principal con sombra pronunciada y rotación leve */}
-            <div className="card main-card">
+            <div className="card main-card bg-light-green shadow" style={{ maxWidth: "500px" }}> {/* Fondo verde pastel al contenedor de la tarjeta */}
                 <div className="card-body text-center">
                     <h2 className="card-title">Task Master</h2>
                     {errores && <MensajeError message={errores} />}

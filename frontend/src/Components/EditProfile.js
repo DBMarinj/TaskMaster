@@ -108,16 +108,18 @@ const EditProfile = () => {
 
             console.log("Respuesta de la actualización:", response.data);  // Para revisar la respuesta
 
-            // Actualizar el estado con los datos actualizados
-            setUserData({
-                ...userData,
-                nombre: response.data.nombre,  // Actualiza correctamente el nombre
-                apellido: response.data.apellido,  // Actualiza correctamente el apellido
-                direccion: response.data.direccion,
-                celular: response.data.celular,
-                email: response.data.email,  // Actualiza correctamente el email
-            });
             setMessage('Perfil actualizado correctamente.');  // Mensaje de éxito
+            
+            // Limpiar el formulario
+            setUserData({
+                id: '',
+                username: '',
+                nombre: '',
+                apellido: '',
+                direccion: '',
+                celular: '',
+                email: '',
+            });
         } catch (error) {
             console.error('Error al actualizar el perfil:', error);
             setErrorMessage('Error al actualizar el perfil.');  // Mostrar error si la petición falla
@@ -130,10 +132,10 @@ const EditProfile = () => {
     };
 
     return (
-        <div className="bg-light-green text-dark min-vh-100"> {/* Aplicar el mismo fondo y color de texto */} 
+        <div className="d-flex flex-column bg-light-green text-dark min-vh-100">
             <Menu userInfo={userInfo} />  {/* Pasa la información del usuario al componente Menu */}
-            <div className="container" style={{ marginTop: '80px' }}>  {/* Aplica margen superior de 100px */}
-                <div className="card mt-4 bg-light" style={{ marginBottom: '80px' }}> {/* Ajuste de margen inferior */}
+            <div className="container flex-grow-1" style={{ marginTop: '80px', marginBottom: '80px' }}>  {/* Aplicar margen superior e inferior */}
+                <div className="card mt-4 bg-light">
                     <div className="card-body">
                         <h2 className="text-center">EDITAR PERFIL</h2>
                         {loading ? (
@@ -228,7 +230,7 @@ const EditProfile = () => {
                     </div>
                 </div>
             </div>
-            <Footer /> {/* Añadido Footer */}
+            <Footer className="bg-light-green text-dark" /> {/* Empuja el Footer al fondo de la página */}
         </div>
     );
 };

@@ -26,7 +26,7 @@ user = get_user_model()
 
 authentication_classes = [JWTAuthentication]
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):#Gestiona las operaciones CRUD para los usuarios. Tiene una lógica específica en el método create para manejar la creación de nuevos usuarios.
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]  # Permitir que cualquier persona pueda crear un usuario
@@ -37,7 +37,7 @@ class UserViewSet(viewsets.ModelViewSet):
         user = serializer.save()#inserta los datos
         return Response(serializer.data, status=status.HTTP_201_CREATED)#retorna 'usuario creado exitosamente'
     
-class CurrentUserView(APIView):
+class CurrentUserView(APIView):#Retorna los datos del usuario autenticado. Se utiliza, por ejemplo, para mostrar los datos del perfil actual en la interfaz.
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -55,13 +55,13 @@ class CurrentUserView(APIView):
         return Response(user_data)
 
 
-class HomeView(APIView):
+class HomeView(APIView):#Retorna un mensaje de bienvenida solo accesible para usuarios autenticados, útil para probar el acceso con JWT.
    permission_classes = (IsAuthenticated, )
    def get(self, request):
        content = {'message': 'Welcome to the JWT Authentication page using React Js and Django!'}
        return Response(content)
    
-class LogoutView(APIView):
+class LogoutView(APIView):# Invalida el token de sesión del usuario, lo que equivale a un cierre de sesión en el sistema de autenticación.
     permission_classes = (IsAuthenticated, )
     def post(self, request):
         # Borramos de la request la información de sesión
@@ -73,7 +73,7 @@ class LogoutView(APIView):
         # Devolvemos la respuesta al cliente
         return Response(status=status.HTTP_200_OK)
 
-class UpdateProfileView(viewsets.ModelViewSet):
+class UpdateProfileView(viewsets.ModelViewSet):#Permite que los usuarios actualicen su perfil. Filtra los datos para asegurar que solo el usuario autenticado pueda editar su propia información.
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
@@ -108,7 +108,7 @@ class UpdateProfileView(viewsets.ModelViewSet):
 
 User = get_user_model()
 
-class RegisterView(generics.CreateAPIView):
+class RegisterView(generics.CreateAPIView):#Proporciona un endpoint para el registro de usuarios mediante RegisterSerializer.
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
 
@@ -126,7 +126,7 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
 class CustomPasswordResetView(PasswordResetView):
     pass
 
-class ChangePasswordView(generics.UpdateAPIView):
+class ChangePasswordView(generics.UpdateAPIView):#Permite a los usuarios cambiar su contraseña si proporcionan la contraseña antigua, la nueva, y la confirmación de la nueva.
     serializer_class = ChangePasswordSerializer
     permission_classes = [IsAuthenticated]
 
@@ -153,7 +153,7 @@ class PasswordResetCompleteView(APIView):
     def get(self, request):
         return Response({"message": "Tu contraseña ha sido restablecida con éxito."}, status=status.HTTP_200_OK)
 
-class PasswordResetRequestView(APIView):
+class PasswordResetRequestView(APIView):#envía un enlace de recuperación al correo electrónico del usuario
     def post(self, request):
         serializer = PasswordResetRequestSerializer(data=request.data)
         if serializer.is_valid():
@@ -184,7 +184,7 @@ class PasswordResetRequestView(APIView):
             return Response({"message": "Correo de recuperación de contraseña enviado."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class PasswordResetConfirmView(APIView):
+class PasswordResetConfirmView(APIView):#permite restablecer la contraseña usando un enlace con un token de validación.
     def post(self, request, uidb64, token):
         try:
             # Decodificar el UID del usuario

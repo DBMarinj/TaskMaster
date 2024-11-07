@@ -91,99 +91,102 @@ const ChangePassword = () => {
   return (
     <div className="dashboard-wrapper login-board bg-light-green min-vh-100"> {/* Fondo y estilo de wrapper similares al archivo Dashboard */}
       <Menu userInfo={userInfo} /> {/* Pasa la información del usuario al componente Menu */}
-      
-      {/* Contenedor principal con margen superior */}
-      <div className="container" style={{ paddingTop: '50px' }}> 
-        <div className="card mt-4 bg-light">
-          <div className="card-body">
-            <h1 className="card-title my-4 text-center">CAMBIAR CONTRASEÑA</h1>
-            {message && <div className="alert alert-info text-center">{message}</div>}
 
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label>Contraseña Actual</label>
-                <div className="input-group">
-                  <input
-                    type={showOldPassword ? 'text' : 'password'}
-                    className="form-control"
-                    value={oldPassword}
-                    onChange={(e) => setOldPassword(e.target.value)}
-                    required
-                    autoComplete="new-password"
-                  />
-                  <div className="input-group-append">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => togglePasswordVisibility('old')}
-                    >
-                      {showOldPassword ? '👁‍🗨' : '👁'}
-                    </button>
+      {/* Contenedor principal con flex-grow para ocupar espacio */}
+      <div style={{ flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="container" style={{ paddingTop: '50px' }}> 
+          <div className="card mt-4 bg-light">
+            <div className="card-body">
+              <h1 className="card-title my-4 text-center">CAMBIAR CONTRASEÑA</h1>
+              {message && <div className="alert alert-info text-center">{message}</div>}
+
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label>Contraseña Actual</label>
+                  <div className="input-group">
+                    <input
+                      type={showOldPassword ? 'text' : 'password'}
+                      className="form-control"
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
+                      required
+                      autoComplete="new-password"
+                    />
+                    <div className="input-group-append">
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={() => togglePasswordVisibility('old')}
+                      >
+                        {showOldPassword ? '👁‍🗨' : '👁'}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="form-group">
-                <label>Nueva Contraseña</label>
-                <div className="input-group">
-                  <input
-                    type={showNewPassword ? 'text' : 'password'}
-                    className="form-control"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                    autoComplete="new-password"
-                  />
-                  <div className="input-group-append">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => togglePasswordVisibility('new')}
-                    >
-                      {showNewPassword ? '👁‍🗨' : '👁'}
-                    </button>
+                <div className="form-group">
+                  <label>Nueva Contraseña</label>
+                  <div className="input-group">
+                    <input
+                      type={showNewPassword ? 'text' : 'password'}
+                      className="form-control"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                      autoComplete="new-password"
+                    />
+                    <div className="input-group-append">
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={() => togglePasswordVisibility('new')}
+                      >
+                        {showNewPassword ? '👁‍🗨' : '👁'}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="form-group">
-                <label>Confirmar Nueva Contraseña</label>
-                <div className="input-group">
-                  <input
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    className="form-control"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    autoComplete="new-password"
-                  />
-                  <div className="input-group-append">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => togglePasswordVisibility('confirm')}
-                    >
-                      {showConfirmPassword ? '👁‍🗨' : '👁'}
-                    </button>
+                <div className="form-group">
+                  <label>Confirmar Nueva Contraseña</label>
+                  <div className="input-group">
+                    <input
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      className="form-control"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      autoComplete="new-password"
+                    />
+                    <div className="input-group-append">
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={() => togglePasswordVisibility('confirm')}
+                      >
+                        {showConfirmPassword ? '👁‍🗨' : '👁'}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="d-flex justify-content-between">
-                <button type="submit" className="btn btn-primary mt-3">
-                  Cambiar Contraseña
-                </button>
-                {passwordChanged && (
-                  <button type="button" className="btn btn-primary mt-3" onClick={handleLogout}>
-                    Volver a Autenticarme
+                <div className="d-flex justify-content-between">
+                  <button type="submit" className="btn btn-primary mt-3">
+                    Cambiar Contraseña
                   </button>
-                )}
-              </div>
-            </form>
+                  {passwordChanged && (
+                    <button type="button" className="btn btn-primary mt-3" onClick={handleLogout}>
+                      Volver a Autenticarme
+                    </button>
+                  )}
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-      <Footer /> {/* Añade el componente Footer */}
+      
+      <Footer className="bg-light-green text-dark" /> {/* Empuja el Footer al fondo de la página */}
     </div>
   );
 };

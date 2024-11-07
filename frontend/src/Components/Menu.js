@@ -18,17 +18,17 @@ const Menu = ({ userInfo }) => {
             bg="dark" 
             expand="lg" 
             variant="dark" 
-            style={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000 }} // Hace el menú estático
+            style={{ position: 'fixed', top: 0, width: '100%', zIndex: 1000, padding: '0 20px' }} // Hace el menú estático y añade padding horizontal
         >
             {/* Título de la aplicación, que redirige al dashboard */}
-            <Navbar.Brand as={Link} to="/dashboard" style={{ color: '#00e0ff' }}>TASK MASTER</Navbar.Brand>
+            <Navbar.Brand as={Link} to="/kanban" style={{ color: '#00e0ff', marginLeft: '20px' }}>TASK MASTER</Navbar.Brand>
             
             {/* Botón para colapsar el menú en pantallas pequeñas */}
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             
             {/* Navbar.Collapse para contener los enlaces que se mostrarán en la barra */}
             <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="ms-auto"> {/* ms-auto para alinear todos los elementos a la derecha */}
+                <Nav className="ms-auto" style={{ marginRight: '40px' }}> {/* ms-auto para alinear todos los elementos a la derecha y margen derecho adicional */}
                     
                     {/* Dropdown para las opciones relacionadas con la gestión de tareas */}
                     <NavDropdown 

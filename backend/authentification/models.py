@@ -21,5 +21,5 @@ class User(AbstractUser):#misma del modelo de django
     )
     role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='comprador')
     
-    def __str__(self):
+    def __str__(self):#Método__str__: Retorna el username para representar al usuario cuando el objeto se convierte en una cadena de texto.
         return self.username
